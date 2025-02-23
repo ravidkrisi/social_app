@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "931595881121",
+    "project_id": "socialapp-4745a",
+    "storage_bucket": "socialapp-4745a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:931595881121:android:0065901115f286095a7ee0",
+        "android_client_info": {
+          "package_name": "com.ravidkrisi.social_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDy80IJdbpEKeVxS9HNkzfg8MTf6AJyoYs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
