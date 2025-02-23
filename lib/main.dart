@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:social_app/features/auth/presentation/pages/login_page.dart';
 import 'package:social_app/firebase_options.dart';
+import 'package:social_app/themes/light_mode.dart';
 
 void main() async {
   // firebase setup
@@ -19,7 +21,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(body: Center(child: Text("hi"))),
+      theme: lightMode,
+      home: LoginPage(),
     );
   }
 }
