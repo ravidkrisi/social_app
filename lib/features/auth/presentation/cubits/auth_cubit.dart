@@ -4,8 +4,6 @@ Auth Cubit: State Management
 
 */
 
-import 'dart:nativewrappers/_internal/vm/lib/ffi_native_type_patch.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/features/auth/domain/entities/app_user.dart';
 import 'package:social_app/features/auth/domain/repos/auth_repo.dart';
