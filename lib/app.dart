@@ -32,7 +32,7 @@ import 'package:social_app/features/auth/data/firebase_auth_repo.dart';
 import 'package:social_app/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:social_app/features/auth/presentation/cubits/auth_states.dart';
 import 'package:social_app/features/auth/presentation/pages/auth_page.dart';
-import 'package:social_app/features/post/presentation/pages/home.dart';
+import 'package:social_app/features/home/presentation/pages/home.dart';
 import 'package:social_app/themes/light_mode.dart';
 
 class MyApp extends StatelessWidget {
