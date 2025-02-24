@@ -1,35 +1,20 @@
-/*
- 
- LOGIN PAGE
-
- on this page, an existing user can login with:
-- email
-- pwd
-
-
-------------------------------------------------------
-
-once the user successfully logged in they will be redirected to the home page.
-
-if the user does not have account they can go to register page.
- */
-
 import 'package:flutter/material.dart';
 import 'package:social_app/features/auth/presentation/components/my_button.dart';
 import 'package:social_app/features/auth/presentation/components/my_text_field.dart';
-import 'package:social_app/features/auth/presentation/pages/register_page.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   // text controllers
+  final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPwController = TextEditingController();
 
   // BUILD UI
   @override
@@ -59,13 +44,28 @@ class _LoginPageState extends State<LoginPage> {
                     fontSize: 16,
                   ),
                 ),
+
+                // divider
                 SizedBox(height: 25),
+
+                // name text field
+                MyTextField(
+                  controller: nameController,
+                  hintText: 'Name',
+                  obscureText: false,
+                ),
+
+                // divider
+                SizedBox(height: 12),
+
                 // email text field
                 MyTextField(
                   controller: emailController,
                   hintText: 'Email',
                   obscureText: false,
                 ),
+
+                // divider
                 SizedBox(height: 12),
 
                 // pwd text field
@@ -74,24 +74,31 @@ class _LoginPageState extends State<LoginPage> {
                   hintText: 'Password',
                   obscureText: true,
                 ),
-                SizedBox(height: 25),
-                // login btn
-                MyButton(onTap: () {}, text: 'Sign In'),
 
+                // divider
+                SizedBox(height: 12),
+
+                // confirm pwd text field
+                MyTextField(
+                  controller: confirmPwController,
+                  hintText: 'Retype password',
+                  obscureText: true,
+                ),
+
+                // divider
+                SizedBox(height: 25),
+
+                // login btn
+                MyButton(onTap: () {}, text: 'Sign Up'),
+
+                // divider
                 SizedBox(height: 50),
+
                 // register now btn
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => RegisterPage()),
-                    );
-                  },
-                  child: Text(
-                    "Not a member? Register now",
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
+                Text(
+                  "Already a member? Log in now",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
               ],
