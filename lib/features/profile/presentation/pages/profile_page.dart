@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/features/auth/domain/entities/app_user.dart';
@@ -78,16 +79,25 @@ class _ProfilePageState extends State<ProfilePage> {
 
                 // profile pic
                 Container(
-                  height: 120,
-                  width: 120,
+                  height: 150,
+                  width: 150,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Theme.of(context).colorScheme.secondary,
                   ),
-                  child: Icon(
-                    Icons.person,
-                    size: 72,
-                    color: Theme.of(context).colorScheme.primary,
+                  clipBehavior: Clip.hardEdge,
+                  child: CachedNetworkImage(
+                    imageUrl: user.profileImageUrl,
+                    imageBuilder:
+                        (context, imageProvider) =>
+                            Image(image: imageProvider, fit: BoxFit.cover),
+                    placeholder: (context, url) => CircularProgressIndicator(),
+                    errorWidget:
+                        (context, url, error) => Icon(
+                          Icons.person,
+                          size: 72,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                   ),
                 ),
 
