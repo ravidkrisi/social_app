@@ -21,12 +21,12 @@ class FirebaseStorageRepo implements StorageRepo {
   // POSTS
   @override
   Future<String?> uploadPostImageMobile(String path, String fileName) {
-    return _uploadFile(path, fileName, 'posts');
+    return _uploadFile(path, fileName, 'posts_images');
   }
 
   @override
   Future<String?> uploadPostImageWeb(Uint8List fileBytes, String fileName) {
-    return _uploadFileBytes(fileBytes, fileName, 'posts');
+    return _uploadFileBytes(fileBytes, fileName, 'posts_images');
   }
 
   /*
