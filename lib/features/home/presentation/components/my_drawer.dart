@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:social_app/features/auth/presentation/cubits/auth_states.dart';
 import 'package:social_app/features/home/presentation/components/my_drawer_tile.dart';
-import 'package:social_app/features/profile/presentation/pages/profile.dart';
+import 'package:social_app/features/profile/presentation/pages/profile_page.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
@@ -44,9 +44,18 @@ class MyDrawer extends StatelessWidget {
                 title: 'PROFILE',
                 icon: Icons.person,
                 onTap: () {
+                  // pop menu drawer
                   Navigator.of(context).pop();
+
+                  // get current user
+                  final currentUser = context.read<AuthCubit>().currentUser;
+                  String? uid = currentUser?.uid;
+
+                  // navigate to profile page
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => ProfilePage()),
+                    MaterialPageRoute(
+                      builder: (context) => ProfilePage(uid: uid ?? ''),
+                    ),
                   );
                 },
               ),
