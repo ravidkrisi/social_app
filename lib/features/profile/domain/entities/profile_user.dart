@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:social_app/features/auth/domain/entities/app_user.dart';
 
 class ProfileUser extends AppUser {

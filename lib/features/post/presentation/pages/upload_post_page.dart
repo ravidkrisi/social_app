@@ -145,36 +145,38 @@ class _UploadPostPageState extends State<UploadPostPage> {
       ),
 
       // BODY
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              // image preview for web
-              if (kIsWeb && webImage != null) Image.memory(webImage!),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                // image preview for web
+                if (kIsWeb && webImage != null) Image.memory(webImage!),
 
-              // image preview for mobile
-              if (!kIsWeb && selectedImage != null)
-                Image.file(File(selectedImage!.path!)),
+                // image preview for mobile
+                if (!kIsWeb && selectedImage != null)
+                  Image.file(File(selectedImage!.path!)),
 
-              SizedBox(height: 10),
+                SizedBox(height: 10),
 
-              // pick image button
-              MaterialButton(
-                onPressed: pickImage,
-                color: Colors.blue.shade300,
-                child: Text('Pick Image'),
-              ),
+                // pick image button
+                MaterialButton(
+                  onPressed: pickImage,
+                  color: Colors.blue.shade300,
+                  child: Text('Pick Image'),
+                ),
 
-              SizedBox(height: 25),
+                SizedBox(height: 25),
 
-              // caption text box
-              MyTextField(
-                controller: captionController,
-                hintText: 'caption',
-                obscureText: false,
-              ),
-            ],
+                // caption text box
+                MyTextField(
+                  controller: captionController,
+                  hintText: 'caption',
+                  obscureText: false,
+                ),
+              ],
+            ),
           ),
         ),
       ),

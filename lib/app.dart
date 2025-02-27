@@ -34,13 +34,10 @@ import 'package:social_app/features/auth/presentation/cubits/auth_states.dart';
 import 'package:social_app/features/auth/presentation/pages/auth_page.dart';
 import 'package:social_app/features/home/presentation/pages/home.dart';
 import 'package:social_app/features/post/data/firebase_post_repo.dart';
-import 'package:social_app/features/post/domain/repos/post_repo.dart';
 import 'package:social_app/features/post/presentation/cubits/post_cubit.dart';
 import 'package:social_app/features/profile/data/firebase_profile_repo.dart';
 import 'package:social_app/features/profile/presentation/cubits/profile_cubit.dart';
-import 'package:social_app/features/profile/presentation/cubits/profile_states.dart';
 import 'package:social_app/features/storage/data/firebase_storage_repo.dart';
-import 'package:social_app/features/storage/domain/storage_repo.dart';
 import 'package:social_app/themes/light_mode.dart';
 
 class MyApp extends StatelessWidget {

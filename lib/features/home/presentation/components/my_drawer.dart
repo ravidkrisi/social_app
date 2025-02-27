@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/features/auth/presentation/cubits/auth_cubit.dart';
-import 'package:social_app/features/auth/presentation/cubits/auth_states.dart';
 import 'package:social_app/features/home/presentation/components/my_drawer_tile.dart';
 import 'package:social_app/features/profile/presentation/pages/profile_page.dart';
 
