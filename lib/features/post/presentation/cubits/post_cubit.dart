@@ -65,4 +65,13 @@ class PostCubit extends Cubit<PostState> {
       emit(PostError('error deleting post: $e'));
     }
   }
+
+  // toggle like on post
+  Future<void> toggleLikePost(String postId, String userId) async {
+    try {
+      await postRepo.toggleLikePost(postId, userId);
+    } catch (e) {
+      emit(PostError('failed to toggle like: $e'));
+    }
+  }
 }

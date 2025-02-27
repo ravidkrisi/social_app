@@ -58,6 +58,33 @@ class _PostTileState extends State<PostTile> {
     }
   }
 
+  // user tapped like btn
+  void toggleLikePost() {
+    // current like status
+    final isLiked = widget.post.likes.contains(currentUser!.uid);
+
+    // optimistically like & update the UI
+    setState(() {
+      if (isLiked) {
+        widget.post.likes.remove(currentUser!.uid);
+      } else {
+        widget.post.likes.add(currentUser!.uid);
+      }
+    });
+
+    // update like
+    postCubit.toggleLikePost(widget.post.id, currentUser!.uid).catchError((
+      error,
+    ) {
+      // if there is an error - revert to original values
+      if (isLiked) {
+        widget.post.likes.add(currentUser!.uid);
+      } else {
+        widget.post.likes.remove(currentUser!.uid);
+      }
+    });
+  }
+
   // show options for deletion
   void showOptions() {
     showDialog(
@@ -154,8 +181,26 @@ class _PostTileState extends State<PostTile> {
             child: Row(
               children: [
                 // like btn
-                Icon(Icons.favorite),
-                Text('0'),
+                SizedBox(
+                  width: 50,
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: toggleLikePost,
+                        child: Icon(
+                          widget.post.likes.contains(currentUser!.uid)
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          color:
+                              widget.post.likes.contains(currentUser!.uid)
+                                  ? Colors.red
+                                  : Colors.black,
+                        ),
+                      ),
+                      Text(widget.post.likes.length.toString()),
+                    ],
+                  ),
+                ),
 
                 SizedBox(width: 20),
 

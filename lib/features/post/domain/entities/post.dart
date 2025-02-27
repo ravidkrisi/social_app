@@ -8,6 +8,7 @@ class Post {
   final String caption;
   final String imageUrl;
   final DateTime timestamp;
+  final List<String> likes;
 
   Post({
     required this.id,
@@ -16,6 +17,7 @@ class Post {
     required this.caption,
     required this.imageUrl,
     required this.timestamp,
+    required this.likes,
   });
 
   Post copyWith({String? newimageUrl}) {
@@ -26,6 +28,7 @@ class Post {
       caption: caption,
       imageUrl: newimageUrl ?? imageUrl,
       timestamp: timestamp,
+      likes: likes,
     );
   }
 
@@ -38,6 +41,7 @@ class Post {
       'caption': caption,
       'image_url': imageUrl,
       'timestamp': timestamp,
+      'likes': likes,
     };
   }
 
@@ -51,6 +55,7 @@ class Post {
       caption: json['caption'],
       imageUrl: json['image_url'],
       timestamp: (json['timestamp'] as Timestamp).toDate(),
+      likes: List<String>.from(json['likes'] ?? []),
     );
   }
 }
