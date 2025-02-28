@@ -12,6 +12,7 @@ import 'package:social_app/features/post/presentation/cubits/post_cubit.dart';
 import 'package:social_app/features/post/presentation/cubits/post_states.dart';
 import 'package:social_app/features/profile/domain/entities/profile_user.dart';
 import 'package:social_app/features/profile/presentation/cubits/profile_cubit.dart';
+import 'package:social_app/features/profile/presentation/pages/profile_page.dart';
 import 'package:uuid/uuid.dart';
 
 class PostTile extends StatefulWidget {
@@ -191,12 +192,7 @@ class _PostTileState extends State<PostTile> {
       color: Theme.of(context).colorScheme.secondary,
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child:
-            // top section: profile pic / name / delete btn
-            topSection(context),
-          ),
+          topSection(context),
           // image
           imageSection(),
           // bottom section: like / comment / timestamp
@@ -204,50 +200,54 @@ class _PostTileState extends State<PostTile> {
           // caption section
           captionSection(),
           // comment section
-          BlocBuilder<PostCubit, PostState>(
-            builder: (context, state) {
-              // LOADED
-              if (state is PostLoaded) {
-                // final individual post
-                final post = state.posts.firstWhere(
-                  (post) => post.id == widget.post.id,
-                );
-
-                if (post.comments.isNotEmpty) {
-                  // numbers of comments to show
-                  int showCommentsCount = post.comments.length;
-
-                  // comment section
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: showCommentsCount,
-                    itemBuilder: (context, index) {
-                      // get individual comment
-                      final comment = post.comments[index];
-
-                      // comment tile UI
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 20.0),
-                        child: CommentTile(comment: comment),
-                      );
-                    },
-                  );
-                }
-              }
-              // LOADING
-              else if (state is PostLoading) {
-                return Center(child: CircularProgressIndicator());
-              }
-              // ERROR
-              else if (state is PostError) {
-                return Center(child: Text(state.message));
-              }
-              return Center(child: Text('something went wrong..'));
-            },
-          ),
+          commentsSection(),
         ],
       ),
+    );
+  }
+
+  BlocBuilder<PostCubit, PostState> commentsSection() {
+    return BlocBuilder<PostCubit, PostState>(
+      builder: (context, state) {
+        // LOADED
+        if (state is PostLoaded) {
+          // final individual post
+          final post = state.posts.firstWhere(
+            (post) => post.id == widget.post.id,
+          );
+
+          if (post.comments.isNotEmpty) {
+            // numbers of comments to show
+            int showCommentsCount = post.comments.length;
+
+            // comment section
+            return ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: showCommentsCount,
+              itemBuilder: (context, index) {
+                // get individual comment
+                final comment = post.comments[index];
+
+                // comment tile UI
+                return Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: CommentTile(comment: comment),
+                );
+              },
+            );
+          }
+        }
+        // LOADING
+        else if (state is PostLoading) {
+          return Center(child: CircularProgressIndicator());
+        }
+        // ERROR
+        else if (state is PostError) {
+          return Center(child: Text(state.message));
+        }
+        return Center(child: Text('something went wrong..'));
+      },
     );
   }
 
@@ -325,50 +325,62 @@ class _PostTileState extends State<PostTile> {
     );
   }
 
-  Row topSection(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        // post's user profile pic
-        postUser?.profileImageUrl != null
-            ? CachedNetworkImage(
-              imageUrl: postUser!.profileImageUrl,
-              errorWidget: (context, url, error) => Icon(Icons.person),
-              imageBuilder:
-                  (context, imageProvider) => Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: imageProvider,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-            )
-            : Icon(Icons.person, color: Colors.blue),
-
-        SizedBox(width: 10),
-        // post's user name
-        Text(
-          widget.post.userName,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.inversePrimary,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Spacer(),
-        // delete button
-        if (isOwnPost)
-          GestureDetector(
-            onTap: showOptions,
-            child: Icon(
-              Icons.delete,
-              color: Theme.of(context).colorScheme.primary,
+  GestureDetector topSection(BuildContext context) {
+    return GestureDetector(
+      onTap:
+          () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProfilePage(uid: widget.post.uid),
             ),
           ),
-      ],
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            // post's user profile pic
+            postUser?.profileImageUrl != null
+                ? CachedNetworkImage(
+                  imageUrl: postUser!.profileImageUrl,
+                  errorWidget: (context, url, error) => Icon(Icons.person),
+                  imageBuilder:
+                      (context, imageProvider) => Container(
+                        width: 40,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: imageProvider,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                )
+                : Icon(Icons.person, color: Colors.blue),
+
+            SizedBox(width: 10),
+            // post's user name
+            Text(
+              widget.post.userName,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.inversePrimary,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Spacer(),
+            // delete button
+            if (isOwnPost)
+              GestureDetector(
+                onTap: showOptions,
+                child: Icon(
+                  Icons.delete,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+          ],
+        ),
+      ),
     );
   }
 }
