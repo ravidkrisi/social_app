@@ -13,6 +13,7 @@ import 'package:social_app/features/profile/presentation/components/profile_stat
 import 'package:social_app/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:social_app/features/profile/presentation/cubits/profile_states.dart';
 import 'package:social_app/features/profile/presentation/pages/edit_profile_page.dart';
+import 'package:social_app/features/profile/presentation/pages/follower_page.dart';
 
 class ProfilePage extends StatefulWidget {
   final String uid;
@@ -118,6 +119,18 @@ class _ProfilePageState extends State<ProfilePage> {
                   postsCount: postsCount,
                   followersCount: user.followers.length,
                   followingCount: user.following.length,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (context) => FollowerPage(
+                              followers: user.followers,
+                              following: user.following,
+                            ),
+                      ),
+                    );
+                  },
                 ),
 
                 SizedBox(height: 25),
