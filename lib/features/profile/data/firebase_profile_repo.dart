@@ -35,4 +35,53 @@ class FirebaseProfileRepo implements ProfileRepo {
       print('error updating profile: $e');
     }
   }
+
+  @override
+  Future<void> toggleFollow(String currentUid, String targetUid) async {
+    try {
+      // fetch users docs
+      final currUserDoc =
+          await firestore.collection('users').doc(currentUid).get();
+      final targetUserDoc =
+          await firestore.collection('users').doc(targetUid).get();
+
+      if (currUserDoc.exists && targetUserDoc.exists) {
+        // get users data
+        final currentUserData = currUserDoc.data();
+        final targetUserData = targetUserDoc.data();
+
+        if (currentUserData != null && targetUserData != null) {
+          // create users objects
+          final currUser = ProfileUser.fromJson(
+            currentUserData as Map<String, dynamic>,
+          );
+          final targetUser = ProfileUser.fromJson(
+            targetUserData as Map<String, dynamic>,
+          );
+
+          // check if the current user is already following the target user
+          final currentFollowing = currUser.following;
+
+          if (currentFollowing.contains(targetUser.uid)) {
+            // unfollow
+            await firestore.collection('users').doc(currentUid).update({
+              'following': FieldValue.arrayRemove([targetUid]),
+            });
+            await firestore.collection('users').doc(targetUid).update({
+              'followers': FieldValue.arrayRemove([currentUid]),
+            });
+          }
+          // follow
+          else {
+            await firestore.collection('users').doc(currentUid).update({
+              'following': FieldValue.arrayUnion([targetUid]),
+            });
+            await firestore.collection('users').doc(targetUid).update({
+              'followers': FieldValue.arrayUnion([currentUid]),
+            });
+          }
+        }
+      }
+    } catch (e) {}
+  }
 }
