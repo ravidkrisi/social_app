@@ -52,12 +52,8 @@ class FirebaseProfileRepo implements ProfileRepo {
 
         if (currentUserData != null && targetUserData != null) {
           // create users objects
-          final currUser = ProfileUser.fromJson(
-            currentUserData as Map<String, dynamic>,
-          );
-          final targetUser = ProfileUser.fromJson(
-            targetUserData as Map<String, dynamic>,
-          );
+          final currUser = ProfileUser.fromJson(currentUserData);
+          final targetUser = ProfileUser.fromJson(targetUserData);
 
           // check if the current user is already following the target user
           final currentFollowing = currUser.following;

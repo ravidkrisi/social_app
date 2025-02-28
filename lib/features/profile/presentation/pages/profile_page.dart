@@ -6,8 +6,10 @@ import 'package:social_app/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:social_app/features/post/presentation/components/post_tile.dart';
 import 'package:social_app/features/post/presentation/cubits/post_cubit.dart';
 import 'package:social_app/features/post/presentation/cubits/post_states.dart';
+import 'package:social_app/features/profile/domain/entities/profile_user.dart';
 import 'package:social_app/features/profile/presentation/components/bio_box.dart';
 import 'package:social_app/features/profile/presentation/components/follow_button.dart';
+import 'package:social_app/features/profile/presentation/components/profile_stats.dart';
 import 'package:social_app/features/profile/presentation/cubits/profile_cubit.dart';
 import 'package:social_app/features/profile/presentation/cubits/profile_states.dart';
 import 'package:social_app/features/profile/presentation/pages/edit_profile_page.dart';
@@ -89,24 +91,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
           return Scaffold(
             // APPBAR
-            appBar: AppBar(
-              title: Text(user.name),
-              foregroundColor: Theme.of(context).colorScheme.primary,
-              actions: [
-                // edit profile
-                if (isOwnProfile)
-                  IconButton(
-                    onPressed:
-                        () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => EditProfilePage(user: user),
-                          ),
-                        ),
-                    icon: Icon(Icons.edit),
-                  ),
-              ],
-            ),
+            appBar: profileAppBar(user, context, isOwnProfile),
 
             // Body
             body: ListView(
@@ -124,27 +109,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 SizedBox(height: 25),
 
                 // profile pic
-                Container(
-                  height: 150,
-                  width: 150,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                  clipBehavior: Clip.hardEdge,
-                  child: CachedNetworkImage(
-                    imageUrl: user.profileImageUrl,
-                    imageBuilder:
-                        (context, imageProvider) =>
-                            Image(image: imageProvider, fit: BoxFit.cover),
-                    placeholder: (context, url) => CircularProgressIndicator(),
-                    errorWidget:
-                        (context, url, error) => Icon(
-                          Icons.person,
-                          size: 72,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                  ),
+                profilePic(context, user),
+
+                SizedBox(height: 25),
+
+                // profile stats
+                PorfileStats(
+                  postsCount: postsCount,
+                  followersCount: user.followers.length,
+                  followingCount: user.following.length,
                 ),
 
                 SizedBox(height: 25),
@@ -250,6 +223,56 @@ class _ProfilePageState extends State<ProfilePage> {
 
         // loading
       },
+    );
+  }
+
+  Container profilePic(BuildContext context, ProfileUser user) {
+    return Container(
+      height: 150,
+      width: 150,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Theme.of(context).colorScheme.secondary,
+      ),
+      clipBehavior: Clip.hardEdge,
+      child: CachedNetworkImage(
+        imageUrl: user.profileImageUrl,
+        imageBuilder:
+            (context, imageProvider) =>
+                Image(image: imageProvider, fit: BoxFit.cover),
+        placeholder: (context, url) => CircularProgressIndicator(),
+        errorWidget:
+            (context, url, error) => Icon(
+              Icons.person,
+              size: 72,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+      ),
+    );
+  }
+
+  AppBar profileAppBar(
+    ProfileUser user,
+    BuildContext context,
+    bool isOwnProfile,
+  ) {
+    return AppBar(
+      title: Text(user.name),
+      foregroundColor: Theme.of(context).colorScheme.primary,
+      actions: [
+        // edit profile
+        if (isOwnProfile)
+          IconButton(
+            onPressed:
+                () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditProfilePage(user: user),
+                  ),
+                ),
+            icon: Icon(Icons.edit),
+          ),
+      ],
     );
   }
 }
